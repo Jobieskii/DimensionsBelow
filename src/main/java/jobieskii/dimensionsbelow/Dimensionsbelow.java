@@ -13,9 +13,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 
 public class Dimensionsbelow implements ModInitializer {
     public static final String ModID = "dimensionsbelow";
@@ -23,14 +21,8 @@ public class Dimensionsbelow implements ModInitializer {
     public static final Block CrackedBedrockBlock = new CrackedBedrock(FabricBlockSettings.of(Material.STONE, MapColor.BLACK).requiresTool().strength(45.0f, 1200.0f).dropsNothing());
     public static final BlockItem CrackedBedrockItem = new PolymerBlockItem(CrackedBedrockBlock, new FabricItemSettings(), Items.BEDROCK);
 
-    public static final Identifier BedrockPortalDownID = new Identifier("dimensionsbelow", "bedrock_portal_down");
-    public static final Block BedrockPortalDownBlock = new BedrockPortalDown(FabricBlockSettings.of(Material.PORTAL)
-            .strength(-1.0F, 3600000.0F)
-            .dropsNothing()
-            .mapColor(MapColor.BLACK)
-    );
-    public static final Identifier BedrockPortalUpID = new Identifier("dimensionsbelow", "bedrock_portal_up");
-    public static final Block BedrockPortalUpBlock = new BedrockPortalUp(FabricBlockSettings.of(Material.PORTAL)
+    public static final Identifier BedrockPortalID = new Identifier("dimensionsbelow", "bedrock_portal");
+    public static final Block BedrockPortalBlock = new BedrockPortal(FabricBlockSettings.of(Material.PORTAL)
             .strength(-1.0F, 3600000.0F)
             .dropsNothing()
             .mapColor(MapColor.BLACK)
@@ -42,8 +34,7 @@ public class Dimensionsbelow implements ModInitializer {
         Registry.register(Registries.BLOCK, CrackedBedrockID, CrackedBedrockBlock);
         Registry.register(Registries.ITEM, CrackedBedrockID, CrackedBedrockItem);
 
-        Registry.register(Registries.BLOCK, BedrockPortalUpID, BedrockPortalUpBlock);
-        Registry.register(Registries.BLOCK, BedrockPortalDownID, BedrockPortalDownBlock);
+        Registry.register(Registries.BLOCK, BedrockPortalID, BedrockPortalBlock);
         {
             PolymerBlockModel pbm = PolymerBlockModel.of(new Identifier(ModID, "block/cracked_bedrock"));
             BlockState bs = PolymerBlockResourceUtils.requestBlock(BlockModelType.FULL_BLOCK, pbm);
@@ -53,8 +44,7 @@ public class Dimensionsbelow implements ModInitializer {
             // This block is transparent to enable beacons and stuff
             PolymerBlockModel pbm = PolymerBlockModel.of(new Identifier(ModID, "block/bedrock_portal"));
             BlockState bs = PolymerBlockResourceUtils.requestBlock(BlockModelType.TRANSPARENT_BLOCK, pbm);
-            BedrockPortalDown.setBs(bs);
-            BedrockPortalUp.setBs(bs);
+            BedrockPortal.setBs(bs);
         }
 
         PolymerResourcePackUtils.addModAssets("dimensionsbelow");
