@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "dimensionsbelow:block/cracked_bedrock"
+  }
+}
+
