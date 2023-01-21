@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static jobieskii.dimensionsbelow.BedrockPortal.TELEPORT_DOWN;
 import static jobieskii.dimensionsbelow.DimensionsBelowUtil.getSisterPortalPos;
+import static jobieskii.dimensionsbelow.DimensionsBelowUtil.nextDimension;
 import static jobieskii.dimensionsbelow.Dimensionsbelow.*;
 import static net.minecraft.block.Blocks.COBBLED_DEEPSLATE;
 
@@ -26,8 +27,9 @@ public class CrackedBedrock extends Block implements PolymerTexturedBlock {
 
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
+        if (!(world instanceof ServerWorld)) return;
         super.afterBreak(world, player, pos, state, blockEntity, stack);
-        Boolean isDown = DimensionsBelowUtil.shouldTeleportDown((ServerWorld) world, pos);
+        boolean isDown = DimensionsBelowUtil.shouldTeleportDown((ServerWorld) world, pos);
         // change this block to a portal
         world.setBlockState(
                 pos,
@@ -35,17 +37,18 @@ public class CrackedBedrock extends Block implements PolymerTexturedBlock {
         );
         // and its sister block on the other side
         BlockPos sister_portal_pos = getSisterPortalPos((ServerWorld) world, pos, isDown);
-        world.setBlockState(
+        ServerWorld nextWorld = world.getServer().getWorld(nextDimension(world.getRegistryKey(), isDown));
+        nextWorld.setBlockState(
                 sister_portal_pos,
                 BedrockPortalBlock.getDefaultState().with(TELEPORT_DOWN, !isDown)
         );
         // and make some air
         if (isDown) {
-            world.breakBlock(sister_portal_pos.down(1), true, player);
-            world.breakBlock(sister_portal_pos.down(2), true, player);
+            nextWorld.breakBlock(sister_portal_pos.down(1), true, player);
+            nextWorld.breakBlock(sister_portal_pos.down(2), true, player);
         } else {
-            world.breakBlock(sister_portal_pos.up(1), true, player);
-            world.breakBlock(sister_portal_pos.up(2), true, player);
+            nextWorld.breakBlock(sister_portal_pos.up(1), true, player);
+            nextWorld.breakBlock(sister_portal_pos.up(2), true, player);
         }
 
     }

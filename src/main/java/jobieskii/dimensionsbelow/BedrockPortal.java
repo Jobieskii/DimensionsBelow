@@ -49,10 +49,11 @@ public class BedrockPortal extends Block implements PolymerTexturedBlock {
             entity.sendMessage(Text.literal("No more dimensions!"));
             return;
         }
+        Vec3d new_pos_vec3d = new_pos.toCenterPos().add(0., down ? -2.5 : 1.5, 0.);
         FabricDimensions.teleport(
                 entity,
                 world.getServer().getWorld(nextDimension(world.getRegistryKey(), down)),
-                new TeleportTarget(new_pos.toCenterPos(), Vec3d.ZERO, 0.f, 0.f)
+                new TeleportTarget(new_pos_vec3d, Vec3d.ZERO, 0.f, 0.f)
         );
     }
 

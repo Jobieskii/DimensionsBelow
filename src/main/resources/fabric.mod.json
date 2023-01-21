@@ -15,6 +15,9 @@
     ],
     "main": [
       "jobieskii.dimensionsbelow.Dimensionsbelow"
+    ],
+    "fabric-datagen": [
+      "jobieskii.dimensionsbelow.DatagenEntryPoint"
     ]
   },
   "mixins": [
